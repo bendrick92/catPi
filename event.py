@@ -1,4 +1,6 @@
 from datetime import datetime
+from servo_manager import ServoManager
+
 
 class Event(object):
 
@@ -7,6 +9,7 @@ class Event(object):
         feed_amount = 0
         event_time = ''
         has_run = 'false'
+        self.servo_man = ServoManager()
 
     def try_execute(self):
         if self.has_run == 'false' and self.event_time <= datetime.now():
@@ -14,7 +17,7 @@ class Event(object):
 
     def execute(self):
         try:
-            # TODO: Run event
+            self.servo_man.run()
             self.has_run = 'true'
         except:
             self.has_run = 'false'

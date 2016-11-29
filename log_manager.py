@@ -16,7 +16,7 @@ class LogManager:
         if self.get_log_count() > 10:
             self.delete_log_file_by_name(self.get_oldest_log_file_name())
         self.log_file_name = self.full_log_file_path + self.get_timestamp_string() + '.log'
-        logging.basicConfig(filename=self.log_file_name, level=logging.DEBUG, format='%(asctime)s: %(message)s')
+        logging.basicConfig(filename=self.log_file_name, level=logging.DEBUG, format='[%(asctime)s] %(message)s')
 
     def add_info_entry_to_log(self, info_text):
         logging.info(str(info_text))
