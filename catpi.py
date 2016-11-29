@@ -17,6 +17,7 @@ class CatPi:
     @log_man.log_event_decorator('Loading from file', 'INFO')
     def load(self, file_name):
         try:
+            self.schedule = Schedule()  # To prevent duplication of JSON
             data = self.dropbox_man.download_file_to_data(file_name)
             self.schedule.load_events_from_data(data)
             if self.schedule.has_events():

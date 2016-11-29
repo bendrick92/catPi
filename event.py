@@ -23,4 +23,4 @@ class Event(object):
             self.has_run = 'false'
 
     def serialize_to_json(self):
-        return '{ "event_time": "' + self.event_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ') + '", "id": "' + str(self.id) + '", "feed_amount": "' + str(self.feed_amount) + '", "has_run": "' + str(self.has_run) + '"}'
+        return '{"event_time": "' + self.event_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ') + '", "id": "' + str(self.id) + '", "feed_amount": "' + str(self.feed_amount) + '", "has_run": "' + str(self.has_run) + '"}'
