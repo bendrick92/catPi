@@ -8,11 +8,10 @@ import os
 
 class CatPi:
 
-    log_man = LogManager()
-
     def __init__(self):
         self.dropbox_man = DropboxManager(SecretKeys.dropbox_access_token)
         self.schedule = Schedule()
+        self.log_man = LogManager()
 
     @log_man.log_event_decorator('Loading from file', 'INFO')
     def load(self, file_name):

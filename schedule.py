@@ -4,7 +4,9 @@ from event import Event
 
 
 class Schedule(object):
-    events = []
+    
+    def __init__(self):
+        self.events = []
             
     def load_events_from_data(self, data):
         if data is not None:
