@@ -42,7 +42,7 @@ class CatPi:
     def save(self, file_name):
         try:
             if self.schedule.has_events():
-                data = self.schedule.serialize_to_json()
+                data = self.schedule.serialize_to_bytes()
                 self.dropbox_man.upload_data_to_file(file_name, data)
                 return 'Changes were saved successfully!'
         except Exception as e:

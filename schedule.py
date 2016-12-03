@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from event import Event
+from image import Image
 
 
 class Schedule(object):
@@ -11,12 +12,16 @@ class Schedule(object):
     def load_events_from_data(self, data):
         if data is not None:
             json_data = json.loads(data)
-            for i in json_data['events']:
+            for e in json_data['events']:
                 event = Event()
-                event.id = i['id']
-                event.feed_amount = i['feed_amount']
-                event.event_time = datetime.strptime(i['event_time'], '%Y-%m-%dT%H:%M:%S.%fZ')
-                event.has_run = i['has_run']
+                event.id = e['id']
+                event.feed_amount = e['feed_amount']
+                event.event_time = datetime.strptime(e['event_time'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                event.has_run = e['has_run']
+                for i in e['images']:
+                    image = Image()
+                    image.file_name = i['file_name']
+                    event.add_image(image)
 
                 self.add_event(event)
 
@@ -29,14 +34,17 @@ class Schedule(object):
         else:
             return False
 
-    def serialize_to_json(self):
-        serialized_json = '{"events": ['
+    def serialize_to_json_string(self):
+        json_string = '{"events": ['
         for index, event in enumerate(self.events):
-            serialized_json += event.serialize_to_json()
+            json_string += event.serialize_to_json_string()
             if index != len(self.events) - 1:
-                serialized_json += ', '
-        serialized_json += ']}'
-        return serialized_json
+                json_string += ', '
+        json_string += ']}'
+        return str(json_string)
+
+    def serialize_to_bytes(self):
+        return str.encode(self.serialize_to_json_string())
 
     def evaluate_events(self):
         if self.has_events():

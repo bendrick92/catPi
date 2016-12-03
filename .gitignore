@@ -1,4 +1,6 @@
 .vscode/*
 logs/*
+imgs/*
+vids/*
 secret_keys.py*
 *.pyc
