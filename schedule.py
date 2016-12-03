@@ -14,8 +14,8 @@ class Schedule(object):
             json_data = json.loads(data)
             for e in json_data['events']:
                 event = Event()
-                event.id = e['id']
-                event.feed_amount = e['feed_amount']
+                event.id = int(e['id'])
+                event.feed_amount = int(e['feed_amount'])
                 event.event_time = datetime.strptime(e['event_time'], '%Y-%m-%dT%H:%M:%S.%fZ')
                 event.has_run = e['has_run']
                 for i in e['images']:

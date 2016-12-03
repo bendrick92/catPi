@@ -2,7 +2,9 @@ from catpi import CatPi
 import time
 
 
+wait_time = 10
+
 while True:
     catpi = CatPi()
     catpi.run('schedule.json')
-    time.sleep(300) # Wait 5 minutes
+    time.sleep(wait_time * 60)

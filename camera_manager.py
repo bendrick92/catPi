@@ -47,7 +47,7 @@ class CameraManager():
         return oldest_img_file_name
 
     def get_oldest_vid_file_name(self):
-        all_vid_files = glob.glob(self.full_vid_file_path + '*.jpg')
+        all_vid_files = glob.glob(self.full_vid_file_path + '*.h264')
         all_vid_files.sort(key=os.path.getmtime)
         oldest_vid_file_name = os.path.basename(all_vid_files[0])
         return oldest_vid_file_name
@@ -95,3 +95,6 @@ class CameraManager():
             counter += 1
             time.sleep(5)
         return img_file_names
+
+    def cleanup(self):
+        self.camera.close()

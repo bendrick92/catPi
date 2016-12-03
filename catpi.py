@@ -1,4 +1,4 @@
-from log_manager import LogManager
+#from log_manager import LogManager
 from secret_keys import SecretKeys
 from dropbox_manager import DropboxManager
 from schedule import Schedule
@@ -9,12 +9,14 @@ from file_manager import FileManager
 
 class CatPi:
 
-    dropbox_man = DropboxManager(SecretKeys.dropbox_access_token)
-    log_man = LogManager()
-    schedule = Schedule()
-    file_man = FileManager()
+    #log_man = LogManager()
 
-    @log_man.log_event_decorator('Loading from file', 'INFO')
+    def __init__(self):
+        self.dropbox_man = DropboxManager(SecretKeys.dropbox_access_token)
+        self.schedule = Schedule()
+        self.file_man = FileManager()
+
+    #@log_man.log_event_decorator('Loading from file', 'INFO')
     def load_json(self, file_name):
         try:
             self.schedule = Schedule()  # To prevent duplication of JSON
@@ -27,7 +29,7 @@ class CatPi:
         except Exception as e:
             return 'An error occurred: ' + str(e)
 
-    @log_man.log_event_decorator('Evaluating events', 'INFO')
+    #@log_man.log_event_decorator('Evaluating events', 'INFO')
     def evaluate_json(self):
         try:
             if self.schedule.has_events():
@@ -38,7 +40,7 @@ class CatPi:
         except Exception as e:
             return 'An error occurred: ' + str(e)
 
-    @log_man.log_event_decorator('Writing changes to file', 'INFO')
+    #@log_man.log_event_decorator('Writing changes to file', 'INFO')
     def save_json(self, file_name):
         try:
             if self.schedule.has_events():
@@ -48,12 +50,12 @@ class CatPi:
         except Exception as e:
             return 'An error occurred: ' + str(e)
 
-    @log_man.log_event_decorator('Syncing local files to cloud', 'INFO')
+    #@log_man.log_event_decorator('Syncing local files to cloud', 'INFO')
     def sync_data(self):
         try:
-            logs = self.file_man.get_logs_as_local_files()
-            for log in logs:
-                self.dropbox_man.upload_data_to_file(self.file_man.logs_dir + log.file_name, log.data)
+            #logs = self.file_man.get_logs_as_local_files()
+            #for log in logs:
+            #    self.dropbox_man.upload_data_to_file(self.file_man.logs_dir + log.file_name, log.data)
             imgs = self.file_man.get_imgs_as_local_files()
             for img in imgs:
                 self.dropbox_man.upload_data_to_file(self.file_man.imgs_dir + img.file_name, img.data)

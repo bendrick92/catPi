@@ -25,10 +25,12 @@ class Event(object):
         if self.has_run == 'false' and self.event_time <= datetime.now():
             self.execute()
         self.servo_man.cleanup()    # Cleanup even if servo is not activated
+        self.camera_man.cleanup()   # Cleanup even if camera is not used
 
     def execute(self):
         try:
-            #self.servo_man.run()
+            if self.feed_amount > 0:
+                self.servo_man.run()
             image_file_names = self.camera_man.take_picture_series(3)
             self.clear_images()
             for image_file_name in image_file_names:
