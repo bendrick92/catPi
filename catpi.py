@@ -4,18 +4,18 @@ from dropbox_manager import DropboxManager
 from schedule import Schedule
 import time
 import os
+from file_manager import FileManager
 
 
 class CatPi:
 
+    dropbox_man = DropboxManager(SecretKeys.dropbox_access_token)
     log_man = LogManager()
-
-    def __init__(self):
-        self.dropbox_man = DropboxManager(SecretKeys.dropbox_access_token)
-        self.schedule = Schedule()
+    schedule = Schedule()
+    file_man = FileManager()
 
     @log_man.log_event_decorator('Loading from file', 'INFO')
-    def load(self, file_name):
+    def load_json(self, file_name):
         try:
             self.schedule = Schedule()  # To prevent duplication of JSON
             data = self.dropbox_man.download_file_to_data(file_name)
@@ -28,7 +28,7 @@ class CatPi:
             return 'An error occurred: ' + str(e)
 
     @log_man.log_event_decorator('Evaluating events', 'INFO')
-    def evaluate(self):
+    def evaluate_json(self):
         try:
             if self.schedule.has_events():
                 self.schedule.evaluate_events()
@@ -39,7 +39,7 @@ class CatPi:
             return 'An error occurred: ' + str(e)
 
     @log_man.log_event_decorator('Writing changes to file', 'INFO')
-    def save(self, file_name):
+    def save_json(self, file_name):
         try:
             if self.schedule.has_events():
                 data = self.schedule.serialize_to_bytes()
@@ -48,7 +48,21 @@ class CatPi:
         except Exception as e:
             return 'An error occurred: ' + str(e)
 
+    @log_man.log_event_decorator('Syncing local files to cloud', 'INFO')
+    def sync_data(self):
+        try:
+            logs = self.file_man.get_logs_as_local_files()
+            for log in logs:
+                self.dropbox_man.upload_data_to_file(self.file_man.logs_dir + log.file_name, log.data)
+            imgs = self.file_man.get_imgs_as_local_files()
+            for img in imgs:
+                self.dropbox_man.upload_data_to_file(self.file_man.imgs_dir + img.file_name, img.data)
+        except Exception as e:
+            return 'An error occurred: ' + str(e)
+
+
     def run(self, file_name):
-        self.load(file_name)
-        self.evaluate()
-        self.save(file_name)
+        self.load_json(file_name)
+        self.evaluate_json()
+        self.save_json(file_name)
+        self.sync_data()
