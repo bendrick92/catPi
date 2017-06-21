@@ -11,7 +11,7 @@ class ServoManager:
 
     def run(self):
         self.pwm.start(10)
-        time.sleep(.5)
+        time.sleep(.75)
         self.pwm.stop()
 
     def cleanup(self):
